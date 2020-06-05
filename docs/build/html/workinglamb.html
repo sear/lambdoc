@@ -1,0 +1,381 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Trabajando en el cluster &#8212; lamb docs 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Tareas de ejemplo" href="jobexamples.html" />
+    <link rel="prev" title="Enviar tareas al cluster chaman" href="submitjobs.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="trabajando-en-el-cluster">
+<span id="working-in-chaman"></span><h1>Trabajando en el cluster<a class="headerlink" href="#trabajando-en-el-cluster" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="subiendo-y-descargando-archivos-y-datos">
+<h2>Subiendo y descargando archivos y datos<a class="headerlink" href="#subiendo-y-descargando-archivos-y-datos" title="Permalink to this headline">¶</a></h2>
+<p>Debemos usar <strong>SCP</strong> (Secure copy protocol) ó <strong>SFTP</strong> (Secure file transfer protocol) para transferir datos y archivos entre su maquina local y el cluster chaman. Usuarios con Unix/Linux y Cygwin pueden usar el comando <code class="docutils literal notranslate"><span class="pre">scp</span></code>. Usuarios de Windows pueden usar <a class="reference external" href="http://mobaxterm.mobatek.net/">MobaXTerm</a>, <a class="reference external" href="http://www.putty.org/">Putty</a> y <a class="reference external" href="https://filezilla-project.org/">Filezilla</a> para SFTP.</p>
+</div>
+<div class="section" id="manejando-tareas">
+<h2>Manejando tareas<a class="headerlink" href="#manejando-tareas" title="Permalink to this headline">¶</a></h2>
+<p>Hay multiples comandos disponibles que son bastante utiles para monitorear el estado de las tareas, verificar el estado del cluster y para solucionar problemas.</p>
+<p class="rubric">showq</p>
+<div class="line-block">
+<div class="line">Muestra todos los trabajos en las colas de chaman.</div>
+<div class="line"><br /></div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ showq
+</pre></div>
+</div>
+<p class="rubric">qstat</p>
+<div class="line-block">
+<div class="line">Este comando provee de otra manera de ver información de las colas de ejecución. Recibe multiples argumentos, y los usuarios se les alienta el experimentar puesto que tiene una variedad de opciones para la entrega de información.</div>
+<div class="line"><br /></div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># Muestra el estado de todas las tareas</span>
+$ qstat -a
+</pre></div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># Muestra todas las tareas que estan corriendo.</span>
+$ qstat -r
+</pre></div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># Muestra información detallada del JodID 12345</span>
+$ qstat -f <span class="m">12345</span>
+</pre></div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># Mostrar información sobre todas las colas del cluster</span>
+$ qstat -q
+</pre></div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># Mostrar las tareas en el cluster de un usuario en especifico</span>
+$ qstat -u &lt;usuario&gt;
+</pre></div>
+</div>
+<p class="rubric">showstart</p>
+<div class="line-block">
+<div class="line">Provee de un tiempo estimado para que una tarea en espera se le asignen recursos.</div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ showstart <span class="m">12345</span>
+</pre></div>
+</div>
+<p class="rubric">checkjob</p>
+<div class="line-block">
+<div class="line">Provee de información sobre una tarea</div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ checkjob <span class="m">123345</span>
+</pre></div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># Mostrar aun mas información sobre la tarea</span>
+$ checkjob -v <span class="m">12345</span>
+</pre></div>
+</div>
+<p class="rubric">tracejob</p>
+<div class="line-block">
+<div class="line">Muestra la bitacora generada de una tarea. La salida es un poco dificil para leer pero puede ser bastante util para solucionar problemas.</div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># Muestra información sobre la tarea 12345. (Solo muestra información hasta 24 horas atras)</span>
+$ tracejob <span class="m">12345</span>
+</pre></div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># Este comando mostrara la bitacora de 2 dias atras.</span>
+$ tracejob -n <span class="m">2</span> <span class="m">12345</span>
+</pre></div>
+</div>
+<p class="rubric">qdel</p>
+<div class="line-block">
+<div class="line">Elimina una tarea de la cola.</div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># Elimina la tarea 12345</span>
+$ qdel <span class="m">12345</span>
+</pre></div>
+</div>
+<p class="rubric">pbsnodes</p>
+<div class="line-block">
+<div class="line">pbsnodes muestra todos los nodos de computo del cluster asi como sus propiedades y estado.</div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># Este comando genera mucha información se recomienda usar la pipa y less para navegar por la salida.</span>
+$ pbsnodes <span class="p">|</span> less
+</pre></div>
+</div>
+<p class="rubric">pbs-query</p>
+<div class="line-block">
+<div class="line">pbs-query es una herramienta desarrollada por el equipo de cómputo científico de la dirección de Telematica CICESE, y su objetivo es darle al usuario una visión clara e intuitiva de los recursos que estan siendo utilizados en el cluster. <a class="reference external" href="https://repohub.cicese.mx/hmedrano/pbs-query">Repositorio código</a></div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="c1"># Listado argumentos que recibe el comando:</span>
+$ pbs-query --help
+usage: pbs-query <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>--allnodes<span class="o">]</span> <span class="o">[</span>--sort SORTCOL<span class="o">]</span> <span class="o">[</span>--allqueues<span class="o">]</span>
+                 <span class="o">[</span>--queue COLA<span class="o">]</span>
+
+PBSQuery Consultar detalles sobre recursos del cluster
+
+optional arguments:
+  -h, --help            show this <span class="nb">help</span> message and <span class="nb">exit</span>
+
+Nodos:
+  --allnodes, -an       Mostrar informacion sobre todos los nodos
+  --sort SORTCOL, -s SORTCOL
+                        Ordenar por: <span class="o">[</span>node-name, core-free<span class="o">]</span>
+
+Colas:
+  --allqueues, -aq      Mostrar detalles de las colas de ejecucion
+  --queue COLA, -q COLA
+                        Mostrar informacion sobre una cola especifica
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">El siguiente comando lista en columnas los nodos de computo (online), sus recursos disponibles y las tareas que se encuentran corriendo dentro de ellos.</div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ pbs-query -an
+</pre></div>
+</div>
+</div>
+<div class="section" id="compresion-netcdf-4">
+<h2>Compresión netCDF-4<a class="headerlink" href="#compresion-netcdf-4" title="Permalink to this headline">¶</a></h2>
+<p>La funcionalidad de compresión es una característica exclusiva de la versión de netcdf-4, esta funcionalidad de compresión de datos es heredada de la librería HDF5 y ZLIB (misma librería que usa GZIP). Este tipo de compresión no requiere que modifiquemos los métodos para leer o escribir datos en un archivo que ya tenga algún nivel de compresión.</p>
+<p><em>Chunking</em> o almacenamiento en trozos es una manera para facilitar tanto el acceso rapido a subconjuntos de datos y una compresión eficiente. El <em>chunking</em> en netcdf-4 es un atributo que se define para cada variable del archivo netcdf que puede, o no estar comprimido, donde se indica cual sera el tamaño de los trozos en los que se ira almacenando el arreglo.</p>
+<div class="figure align-center" id="id2">
+<a class="reference internal image-reference" href="_images/netcdf-chunking.png"><img alt="_images/netcdf-chunking.png" src="_images/netcdf-chunking.png" style="width: 387.09999999999997px; height: 190.39999999999998px;" /></a>
+<p class="caption"><span class="caption-text">Almacenamiento continuo y almacenamiento en trozos</span></p>
+</div>
+<p>Este atributo si se define correctamente beneficia muchisimo el desempeño para el acceso a datos multidimensionales a lo largo de varios ejes. Esto es especialmente cierto para cuando se requiere obtener series de tiempo de archivos grandes, pues se balancean los tiempos de acceso para la dimensión mas lenta (tiempo, profundidad) y las de acceso espacial (x,y).   <a class="reference external" href="https://www.unidata.ucar.edu/blogs/developer/en/entry/chunking_data_why_it_matters">Saber mas sobre chunking</a></p>
+<p>Ademas de estos beneficios, cuando el netcdf tambíen esta comprimido, la lectura de los datos no requiere la descompresión de toda la variable, si no solo los trozos que contienen el subconjunto solicitado.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">La librería netcdf-4 utiliza un formato de compresión si perdidas, por lo que se garantiza que cada bit de los datos originales se pueden recuperar.</p>
+</div>
+<p>Aqui las reglas con las que se maneja la compresión de datos en netcdf-4:</p>
+<ul class="simple">
+<li>Los datos de la variable es lo que se comprime, no así los metadatos (atributos).</li>
+<li>Se debe especificar un nivel de compresion (<em>deflate level</em>) del 1 a 9.</li>
+<li>El nivel 1 pretende comprimir mas rapido que el nivel 9.</li>
+<li>El nivel 9 pretende comprimir mas pequeño que el nivel 1.</li>
+<li>El uso de la dimensión ilimitada (<em>unlimited dimension</em>) puede degradar la compresión.</li>
+<li>Una variable comprimida estara forzosamente almacenada en trozos (<em>chunked</em>)</li>
+<li>El tamaño de los trozos influye mucho en la calidad de la compresión.</li>
+<li>Para experimentar con la compresión netCDF se puede utilizar la herramienta nativa <code class="docutils literal notranslate"><span class="pre">nccopy</span></code>, comandos NCO o SDKs de netCDF-4 (ej. <a class="reference external" href="http://unidata.github.io/netcdf4-python/#section9">python-netcdf-4</a> )</li>
+</ul>
+<div class="section" id="ejemplos-de-compresion">
+<h3>Ejemplos de compresión<a class="headerlink" href="#ejemplos-de-compresion" title="Permalink to this headline">¶</a></h3>
+<p><strong>Usando: nccopy</strong></p>
+<p>Usemos datos reales para este ejemplo, un archivo netcdf formato clasico de 1346.20 MB salida del modelo numerico NEMO.</p>
+<p>Intentemos usando <code class="docutils literal notranslate"><span class="pre">nccopy</span></code> con un nivel de compresión 1, y ver que tanto espacio ganamos.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ nccopy -k <span class="s1">&#39;netCDF-4&#39;</span> -d1 file4D_classic.nc file4D_nc4_d1.nc
+<span class="c1"># El argumento -k &#39;netCDF-4&#39; le indica que estaremos produciendo un archivo del tipo netCDF-4</span>
+<span class="c1"># -d1 Indica que usamos el nivel de compresión 1</span>
+<span class="c1"># Tiempo cpu aprox. 19.81 seg.  (promedio de 10 ejecuciones de este mismo comando, en nodo de cómputo de chaman)</span>
+
+$ ls -l
+-rw-rw-r-- <span class="m">1</span> operador operador 1347M Nov <span class="m">22</span> <span class="m">16</span>:30 file4D_classic.nc
+-rw-rw-r-- <span class="m">1</span> operador operador  382M Nov <span class="m">22</span> <span class="m">16</span>:42 file4D_nc4_d1.nc
+<span class="c1"># El archivo final es un 28% del tamaño original.</span>
+</pre></div>
+</div>
+<p>Ahora, igual usemos <code class="docutils literal notranslate"><span class="pre">nccopy</span></code> pero con un nivel de compresión 9, el máximo.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ nccopy -k <span class="s1">&#39;netCDF-4&#39;</span> -d9 file4D_classic.nc file4D_nc4_d9.nc
+<span class="c1"># Tiempo de cpu aprox. 70.40 seg.</span>
+
+$ ls -l
+-rw-rw-r-- <span class="m">1</span> operador operador 1347M Nov <span class="m">22</span> <span class="m">16</span>:30 file4D_classic.nc
+-rw-rw-r-- <span class="m">1</span> operador operador  375M Nov <span class="m">22</span> <span class="m">17</span>:05 file4D_nc4_d9.nc
+<span class="c1"># El archivo final es un 27.7% del tamaño original.</span>
+</pre></div>
+</div>
+<p><strong>Usando comandos NCO</strong></p>
+<p>Una mejor alternativa para comprimir netcdf por lo que indican los tiempos de ejecución, son los comandos <code class="docutils literal notranslate"><span class="pre">NCO</span></code> <a class="reference external" href="http://nco.sourceforge.net">Sitio oficial</a>.  NCO son una serie de comandos que hacen operaciones sobre archivos netcdf of rutas openDAP, y las salidas que se escriban en netcdf-4 se les puede agregar el parametro del nivel de compresion.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">La version mas reciente de estos comandos estan accesibles en el modulo: <code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">load</span> <span class="pre">intel/cdf-bundle2017</span></code></p>
+</div>
+<p>Usando <code class="docutils literal notranslate"><span class="pre">ncks</span></code> para hacer una copia del archivo netcdf clasico a netcdf-4 con compresion nivel 1.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ ncks -O -4 -L <span class="m">1</span> file4D_classic.nc file4D_nco_nc4_d1.nc
+<span class="c1"># -4 Indica que se genera un archivo formato netcdf-4</span>
+<span class="c1"># -L 1 indica el nivel de compresión</span>
+<span class="c1"># Tiempo cpu aprox. 13.51 seg. Poco mas de 6 seg. mas rapido que nccopy</span>
+
+$ ls -l
+-rw-rw-r-- <span class="m">1</span> operador operador 1347M Nov <span class="m">22</span> <span class="m">16</span>:30 file4D_classic.nc
+-rw-rw-r-- <span class="m">1</span> operador operador  288M Nov <span class="m">23</span> <span class="m">00</span>:18 file4D_nco_nc4_d1.nc
+</pre></div>
+</div>
+<p>Un nivel de compresión 3. <strong>Recomendado</strong></p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ ncks -O -4 -L <span class="m">3</span> file4D_classic.nc file4D_nco_nc4_d3.nc
+<span class="c1"># Tiempo cpu aprox. 14.41 seg.</span>
+
+$ ls -l
+-rw-rw-r-- <span class="m">1</span> operador operador 1347M Nov <span class="m">22</span> <span class="m">16</span>:30 file4D_classic.nc
+-rw-rw-r-- <span class="m">1</span> operador operador  283M Nov <span class="m">23</span> <span class="m">00</span>:20 file4D_nco_nc4_d3.nc
+</pre></div>
+</div>
+<p>Nivel de compresión 9</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ ncks -O -4 -L <span class="m">9</span> file4D_classic.nc file4D_nco_nc4_d9.nc
+<span class="c1"># Tiempo cpu aprox. 104.23 seg.</span>
+
+$ ls -l
+-rw-rw-r-- <span class="m">1</span> operador operador 1347M Nov <span class="m">22</span> <span class="m">16</span>:30 file4D_classic.nc
+-rw-rw-r-- <span class="m">1</span> operador operador  270M Nov <span class="m">23</span> <span class="m">00</span>:41 file4D_nco_nc4_d9.nc
+</pre></div>
+</div>
+</div>
+<div class="section" id="comprimiendo-multiples-archivos">
+<h3>Comprimiendo multiples archivos<a class="headerlink" href="#comprimiendo-multiples-archivos" title="Permalink to this headline">¶</a></h3>
+<p>Cuando estemos lidiando con un listado importante de archivos netcdf que necesitemos comprimir, tenemos que tomar otra alternativa como a la de hacer llamados en serie de los comandos anteriores, o dejar corriendo N procesos de compresión al mismo tiempo. Pues con esto podemos crear cuellos de botella que hacen el proceso de compresión sea aun mas lento.</p>
+<p>La alternativa es hacer tandas de procesos compresión y mandarlas como una tarea de PBS. Estas tareas de PBS se pueden declarar como un arreglo de tareas y mandarlas con <cite>qsub</cite></p>
+<p>Script para comprimir multiples archivos netcdf:  <a class="reference external" href="https://repohub.cicese.mx/hmedrano/ncdeflate-parallel">ncdeflate-parallel</a></p>
+<p>Lo que hace este script es tomar un listado de archivos netcdf que se le especifiquen y mandar tareas a PBS con tandas de 20 (default) procesos de compresión. Este numero se utiliza por defecto pues es el numero de procesadores que se tienen el los nodos de computo “default”.  Siendo esta la alternativa mas eficiente para comprimir multiples archivos netcdf.</p>
+<p>Ejemplo:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ ./deflatenc.sh -i files-original -o deflated
+ - entradas     : files-original/*.nc
+ - salida       : ./deflated
+ - compresion   : <span class="m">3</span>
+ - numero archivos comprimir : <span class="m">704</span>
+ - Tareas/ppn : <span class="m">36</span> / <span class="m">20</span>
+Enviado un arreglo de <span class="m">36</span> tareas, cada un con <span class="m">20</span> procesos de compresion <span class="o">(</span>NCO<span class="o">)</span>, para comprimir un total de <span class="m">704</span> archivos netcdf.
+<span class="m">24118</span><span class="o">[]</span>
+
+$ qstat
+Job ID                    Name             User            Time Use S Queue
+------------------------- ---------------- --------------- -------- - -----
+<span class="m">24118</span><span class="o">[]</span>                    ncdeflate        operador              <span class="m">0</span> R default
+</pre></div>
+</div>
+<p>Descargar y ver ejemplo en: <a class="reference external" href="https://repohub.cicese.mx/hmedrano/ncdeflate-parallel">ncdeflate-parallel</a> .</p>
+</div>
+</div>
+<div class="section" id="sistema-de-archivos-lustre">
+<h2>Sistema de archivos LUSTRE<a class="headerlink" href="#sistema-de-archivos-lustre" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="que-es-lustre">
+<h3>¿Qué es LUSTRE?<a class="headerlink" href="#que-es-lustre" title="Permalink to this headline">¶</a></h3>
+<p>Lustre es un sistema de archivos compartidos de alto desempeño para clusters Linux manejado por el software de Lustre. Es altamente escalable y puede soportar miles de nodos cliente, petabytes de almacenamiento, y un rendimiento de cientos de gigabytes por segundo. La carpeta que que contiene este sistema de archivos se encuentra montado en <code class="docutils literal notranslate"><span class="pre">/LUSTRE</span></code>.</p>
+<p>Cada sistema de archivos Lustre es en realidad un conjunto de varios mini sistemas de archivos, a los que se les llama “Object Storage Targets” (OSTs). El software de Lustre presenta los OSTs como un solo sistema de archivos unificado.</p>
+</div>
+<div class="section" id="file-stripping">
+<h3>File stripping<a class="headerlink" href="#file-stripping" title="Permalink to this headline">¶</a></h3>
+<p><em>TODO</em></p>
+</div>
+</div>
+<div class="section" id="mas-informacion">
+<h2>Mas información<a class="headerlink" href="#mas-informacion" title="Permalink to this headline">¶</a></h2>
+<p>Sugerimos que los usuarios puedan revisar las paginas de manuales y la documentación oficial de PBS en este <a class="reference external" href="http://docs.adaptivecomputing.com/torque/6-0-1/help.htm">vinculo</a></p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">lamb docs</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Tabla de contenido</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="aboutlamb.html">Sobre chaman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gstarted.html">Empezando</a></li>
+<li class="toctree-l1"><a class="reference internal" href="submitjobs.html">Someter tareas al cluster</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Trabajando en chaman</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#subiendo-y-descargando-archivos-y-datos">Subiendo y descargando archivos y datos</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#manejando-tareas">Manejando tareas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#compresion-netcdf-4">Compresión netCDF-4</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ejemplos-de-compresion">Ejemplos de compresión</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#comprimiendo-multiples-archivos">Comprimiendo multiples archivos</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#sistema-de-archivos-lustre">Sistema de archivos LUSTRE</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#que-es-lustre">¿Qué es LUSTRE?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#file-stripping">File stripping</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#mas-informacion">Mas información</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="jobexamples.html">Tareas de ejemplo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modelingsoftware.html">Software de modelado</a></li>
+<li class="toctree-l1"><a class="reference internal" href="production.html">Productos de chaman</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://chaman.cicese.mx/ganglia/">Monitoreo de recursos: Ganglia</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="submitjobs.html" title="previous chapter">Enviar tareas al cluster chaman</a></li>
+      <li>Next: <a href="jobexamples.html" title="next chapter">Tareas de ejemplo</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, divCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/workinglamb.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

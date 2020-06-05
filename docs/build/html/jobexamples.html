@@ -1,0 +1,316 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Tareas de ejemplo &#8212; lamb docs 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Software disponible en chaman" href="software.html" />
+    <link rel="prev" title="Trabajando en el cluster" href="workinglamb.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="tareas-de-ejemplo">
+<span id="job-examples"></span><h1>Tareas de ejemplo<a class="headerlink" href="#tareas-de-ejemplo" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="hola-mundo">
+<h2>Hola mundo<a class="headerlink" href="#hola-mundo" title="Permalink to this headline">¶</a></h2>
+<p>El siguiente script reserva un nodo de computo por un tiempo maximo de 1 minuto.
+El script imprime en la consola estandar “Hola Mundo” duerme 10 segundos y termina imprimiendo la fecha y hora.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+
+<span class="c1"># Directivas</span>
+<span class="c1">#PBS -N HolaMundo</span>
+<span class="c1">#PBS -l nodes=1,walltime=00:01:00</span>
+
+<span class="c1"># Definir los archivos de salida de consola y de error</span>
+<span class="c1">#PBS -o holamundo.out</span>
+<span class="c1">#PBS -e holamundo.err</span>
+
+<span class="c1"># La variable de entorno $PBS_O_WORKDIR es el directorio desde el que se ejecuta &quot;qsub holamundo.sh&quot;</span>
+<span class="nb">cd</span> <span class="nv">$PBS_O_WORKDIR</span>
+
+<span class="c1"># Imprimir &quot;Hola mundo&quot;</span>
+<span class="nb">echo</span> <span class="s2">&quot;Hola Mundo&quot;</span>
+
+<span class="c1"># Dormir por 10 segundos</span>
+sleep <span class="m">10</span>
+
+<span class="c1"># Imprimir la fecha y hora</span>
+date
+
+<span class="c1"># Fin del script</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="python">
+<h2>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h2>
+<p>Programas en python pueden ser enviados como tareas por lotes al cluster.</p>
+<p>Como ejemplo el siguiente codigo en python. <code class="docutils literal notranslate"><span class="pre">interpol1D.py</span></code></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="n">matplotlib</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s1">&#39;Agg&#39;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">interpolate</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="mf">9.0</span><span class="p">)</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="n">interpolate</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+<span class="n">f2</span> <span class="o">=</span> <span class="n">interpolate</span><span class="o">.</span><span class="n">interp1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;cubic&#39;</span><span class="p">)</span>
+
+
+<span class="n">xnew</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">endpoint</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">tck</span> <span class="o">=</span> <span class="n">interpolate</span><span class="o">.</span><span class="n">splrep</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">f3</span> <span class="o">=</span> <span class="n">interpolate</span><span class="o">.</span><span class="n">splev</span><span class="p">(</span><span class="n">xnew</span><span class="p">,</span> <span class="n">tck</span> <span class="p">,</span> <span class="n">der</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">xnew</span><span class="p">,</span> <span class="n">f</span><span class="p">(</span><span class="n">xnew</span><span class="p">),</span> <span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">xnew</span><span class="p">,</span> <span class="n">f2</span><span class="p">(</span><span class="n">xnew</span><span class="p">),</span> <span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">xnew</span><span class="p">,</span> <span class="n">f3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Intepolacion 1D - metodos&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">([</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="s1">&#39;cubic&#39;</span><span class="p">,</span><span class="s1">&#39;Cubic Spline&#39;</span><span class="p">],</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;best&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;interpol1D.png&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Preparamos el script para enviar la tarea al manejador de recursos:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1">#PBS -N pythonjob</span>
+<span class="c1">#PBS -q default</span>
+<span class="c1">#PBS -l nodes=1</span>
+<span class="c1">#PBS -j oe</span>
+
+module load anaconda-python-2.7
+
+<span class="nb">set</span> -x
+<span class="nb">cd</span> <span class="nv">$PBS_O_WORKDIR</span>
+
+<span class="nb">echo</span> Inicio: <span class="sb">`</span>date<span class="sb">`</span> &gt; tiempo.log
+<span class="nv">start</span><span class="o">=</span><span class="sb">`</span>date +%s<span class="sb">`</span>
+
+python interpol1D.py
+
+<span class="nb">echo</span> Final : <span class="sb">`</span>date<span class="sb">`</span> &gt;&gt; tiempo.log
+<span class="nv">end</span><span class="o">=</span><span class="sb">`</span>date +%s<span class="sb">`</span>
+<span class="nb">echo</span> Tiempo ejecución : <span class="k">$((</span>end-start<span class="k">))</span> seg. &gt;&gt; tiempo.log
+</pre></div>
+</div>
+<p>Para ejecutar la tarea escribimos:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ qsub submitjob.sh
+</pre></div>
+</div>
+<p>El resultado de la operación correcta de esta tarea debe producir tres archivos, una imagen png <code class="docutils literal notranslate"><span class="pre">interpol1D.png</span></code> un archivo <code class="docutils literal notranslate"><span class="pre">tiempo.log</span></code> y <code class="docutils literal notranslate"><span class="pre">submitjob.o####</span></code> siendo #### el numero del JobID que nos asigno el manejador de tareas.</p>
+</div>
+<div class="section" id="jupyter-notebook">
+<h2>Jupyter Notebook<a class="headerlink" href="#jupyter-notebook" title="Permalink to this headline">¶</a></h2>
+<p>Jupyter notebook es una aplicación web desarrollada en python, que permite crear y compartir documentos que contienen código vivo, ecuaciones, visualizaciones y texto narrativo, sus usos incluyen el analisis de datos, estadística, y visualización, entre otras cosas. Jupyter notebook soporta más de 40 lenguajes de programación, entre ellos Python, Julia, R, incluso Matlab.</p>
+<p>Con esta aplicación podemos ejecutar comandos de Python, o Julia (2 Kernels disponibles en chaman) desde una interface web. Estos comandos se ejecutan en los recursos reservados de chaman, y se reciben los resultados numericos o graficos, embebidos en la misma interface web.</p>
+<img alt="Demostración Jupyter notebook" class="align-center" src="_images/jupyter-notebook-demo.png" />
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Jupyter notebook esta disponible en los modulos <code class="docutils literal notranslate"><span class="pre">anaconda-python-2.7</span></code> y <code class="docutils literal notranslate"><span class="pre">anaconda-python-3.5</span></code>.</p>
+</div>
+<p>Para ejecutar esta aplicación es necesario seguir los siguientes pasos:</p>
+<p>Copiar el siguiente script a un archivo <cite>notebook-job.pbs</cite>:</p>
+<div class="highlight-shell notranslate"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17</pre></div></td><td class="code"><div class="highlight"><pre><span></span><span class="ch">#!/bin/sh</span>
+
+<span class="c1"># Directivas</span>
+<span class="c1">#PBS -N notebook-job</span>
+<span class="c1">#PBS -l nodes=1,walltime=01:00:00</span>
+
+<span class="c1"># Definir los archivos de salida de consola y de error</span>
+<span class="c1">#PBS -o notebook-job.out</span>
+<span class="c1">#PBS -j oe</span>
+
+<span class="nb">cd</span> <span class="nv">$PBS_O_WORKDIR</span>
+
+module load anaconda-python-2.7
+
+<span class="nv">JUPYTERPORT</span><span class="o">=</span><span class="m">9999</span>
+<span class="nb">echo</span> <span class="s2">&quot;ssh -N -L </span><span class="nv">$JUPYTERPORT</span><span class="s2">:</span><span class="k">$(</span>hostname<span class="k">)</span><span class="s2">:</span><span class="nv">$JUPYTERPORT</span><span class="s2"> </span><span class="nv">$USER</span><span class="s2">@chaman.cicese.mx&quot;</span>
+jupyter notebook --no-browser --ip<span class="o">=</span><span class="k">$(</span>hostname<span class="k">)</span> --port<span class="o">=</span><span class="nv">$JUPYTERPORT</span> --NotebookApp.token<span class="o">=</span><span class="s1">&#39;&#39;</span>
+</pre></div>
+</td></tr></table></div>
+<p>Reservar recursos:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ qsub notebook-job.pbs
+</pre></div>
+</div>
+<p>Si hay recursos disponibles en el cluster, el script generara un archivo de bitacora <code class="docutils literal notranslate"><span class="pre">notebook-job.out</span></code>, en la primera linea de este archivo estara un comando de ssh que necesitamos ejecutar en nuestro equipo local (PC, Laptop). El comando será algo como lo siguiente:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ssh -N -L <span class="m">9999</span>:compute-local-0-28:9999 miusuario@chaman.cicese.mx
+</pre></div>
+</div>
+<p>Copiar este comando y ejecutarlo en el equipo local, ssh preguntara por su contraseña de acceso a chaman. Una vez escrita podemos navegar desde nuestro explorador (firefox, chrome) a <code class="docutils literal notranslate"><span class="pre">http://localhost:9999</span></code> donde estara la interface web de jupyter notebook.</p>
+<img alt="Pagina de inicio jupyter notebook" class="align-center" src="_images/jupyter-notebook-start.png" />
+<div class="admonition important">
+<p class="first admonition-title">Important</p>
+<p class="last">Una vez terminada la sesión de Jupyter Notebook, no olvidemos terminar la tarea que se mando al cluster y el comando de ssh que se ejecuto en el equipo local.</p>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>miusuario@chaman my-notebook<span class="o">]</span>$ qstat
+Job ID                    Name             User            Time Use S Queue
+------------------------- ---------------- --------------- -------- - -----
+<span class="m">29521</span>                      GOLFO36-TRA10    user1          <span class="m">256</span>:41:0 R memsup
+<span class="m">29522</span>                      GOLFO12-R29      user2          <span class="m">80</span>:35:40 R default
+<span class="m">29530</span>                      notebook-job     miusuario      <span class="m">00</span>:07:05 R default   *
+
+<span class="o">[</span>miusuario@chaman my-notebook<span class="o">]</span>$ qdel <span class="m">29530</span>
+</pre></div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="o">[</span>miusuario@mi-maquina <span class="o">]</span>$ ssh -N -L <span class="m">9999</span>:compute-0-2.local:9999 miusuario@chaman.cicese.mx
+Password: *****
+
+^C <span class="o">(</span>ctrl + C<span class="o">)</span>
+</pre></div>
+</div>
+<div class="section" id="solucion-de-problemas">
+<h3>Solución de problemas<a class="headerlink" href="#solucion-de-problemas" title="Permalink to this headline">¶</a></h3>
+<p>Si en el archivo <code class="docutils literal notranslate"><span class="pre">notebook-job.out</span></code> se encuentra algun mensaje como el siguiente:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>ERROR: the notebook server could not be started because no available port could be found.
+</pre></div>
+</div>
+<p>Probar cambiando la variable <code class="docutils literal notranslate"><span class="pre">JUPYTERPORT</span></code> en el script al numero anterior. Ej. <code class="docutils literal notranslate"><span class="pre">JUPYTERPORT=9998</span></code></p>
+<p>Esto puede ser necesario pues si el puerto que se especifique en <code class="docutils literal notranslate"><span class="pre">JUPYTERPORT</span></code> debe de estar disponible. Es decir que ninguna otra aplicación este utilizando el mismo puerto, tanto en los recursos reservados de chaman como en el equipo local.</p>
+</div>
+</div>
+<div class="section" id="c-c">
+<h2>C, C++<a class="headerlink" href="#c-c" title="Permalink to this headline">¶</a></h2>
+<p>TODO</p>
+</div>
+<div class="section" id="fortran">
+<h2>Fortran<a class="headerlink" href="#fortran" title="Permalink to this headline">¶</a></h2>
+<p>TODO</p>
+</div>
+<div class="section" id="matlab">
+<h2>Matlab<a class="headerlink" href="#matlab" title="Permalink to this headline">¶</a></h2>
+<p>TODO</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">lamb docs</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Tabla de contenido</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="aboutlamb.html">Sobre chaman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gstarted.html">Empezando</a></li>
+<li class="toctree-l1"><a class="reference internal" href="submitjobs.html">Someter tareas al cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workinglamb.html">Trabajando en chaman</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Tareas de ejemplo</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#hola-mundo">Hola mundo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#python">Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#jupyter-notebook">Jupyter Notebook</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#solucion-de-problemas">Solución de problemas</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#c-c">C, C++</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fortran">Fortran</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#matlab">Matlab</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modelingsoftware.html">Software de modelado</a></li>
+<li class="toctree-l1"><a class="reference internal" href="production.html">Productos de chaman</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://chaman.cicese.mx/ganglia/">Monitoreo de recursos: Ganglia</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="workinglamb.html" title="previous chapter">Trabajando en el cluster</a></li>
+      <li>Next: <a href="software.html" title="next chapter">Software disponible en chaman</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, divCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/jobexamples.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,512 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Software de modelado &#8212; lamb docs 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Productos del cluster Chaman" href="production.html" />
+    <link rel="prev" title="Software disponible en chaman" href="software.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="software-de-modelado">
+<h1>Software de modelado<a class="headerlink" href="#software-de-modelado" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="nemo-opa-3-4">
+<h2>NEMO-OPA 3.4<a class="headerlink" href="#nemo-opa-3-4" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="compilando-de-xios">
+<h3>Compilando de XIOS<a class="headerlink" href="#compilando-de-xios" title="Permalink to this headline">¶</a></h3>
+<p>Antes de correr el script de compilacion make_xios, es necesario crear en el directorio arch, los archivos que definan la arquitectura con la que vamos a compilar xios.</p>
+<p>En este caso usaremos los compiladores de Intel y librerias de MPI. El contenido se los archivos debe de coincidir a lo siguiente:</p>
+<ul class="simple">
+<li>arch-X64_KANIK2.path</li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">NETCDF_INCDIR</span><span class="o">=</span><span class="s2">&quot;-I/ruta_a_librerias/libraries/include&quot;</span>
+<span class="nv">NETCDF_LIBDIR</span><span class="o">=</span><span class="s2">&quot;-L/ruta_a_librerias/libraries/lib&quot;</span>
+<span class="nv">NETCDF_LIB</span><span class="o">=</span><span class="s2">&quot;-lnetcdf&quot;</span>
+
+<span class="nv">MPI_INCDIR</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+<span class="nv">MPI_LIBDIR</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+<span class="nv">MPI_LIB</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+
+<span class="nv">HDF5_INCDIR</span><span class="o">=</span><span class="s2">&quot;-I/ruta_a_librerias/libraries/include&quot;</span>
+<span class="nv">HDF5_LIBDIR</span><span class="o">=</span><span class="s2">&quot;-L/ruta_a_librerias/libraries/lib&quot;</span>
+<span class="nv">HDF5_LIB</span><span class="o">=</span><span class="s2">&quot;-lhdf5_hl -lhdf5 -lhdf5 -lcurl -lmpi&quot;</span>
+
+<span class="nv">OASIS_INCDIR</span><span class="o">=</span><span class="s2">&quot;-I</span><span class="nv">$PWD</span><span class="s2">/../../prism/X64/build/lib/psmile.MPI1&quot;</span>
+<span class="nv">OASIS_LIBDIR</span><span class="o">=</span><span class="s2">&quot;-L</span><span class="nv">$PWD</span><span class="s2">/../../prism/X64/lib&quot;</span>
+<span class="nv">OASIS_LIB</span><span class="o">=</span><span class="s2">&quot;-lpsmile.MPI1 -lmpp_io&quot;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>arch-X64_KANIK2.fcm</li>
+</ul>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1">################################################################################</span>
+<span class="c1">###################        Projet xios - xmlioserver       #####################</span>
+<span class="c1">################################################################################</span>
+
+%CCOMPILER      mpiicc
+%FCOMPILER      mpiifort
+%LINKER         mpiifort  -nofor-main
+
+%BASE_CFLAGS    -diag-disable <span class="m">1125</span> -diag-disable <span class="m">279</span>
+%PROD_CFLAGS    -O3 -fp-model <span class="nb">source</span> -D BOOST_DISABLE_ASSERTS
+%DEV_CFLAGS     -g -traceback
+%DEBUG_CFLAGS   -DBZ_DEBUG -g -traceback -fno-inline
+
+%BASE_FFLAGS    -D__NONE__
+%PROD_FFLAGS    -O3 -fp-model <span class="nb">source</span>
+%DEV_FFLAGS     -g -O2 -traceback
+%DEBUG_FFLAGS   -g -traceback
+
+%BASE_INC       -D__NONE__
+%BASE_LD        -lstdc
+
+%CPP            mpiicc -EP
+%FPP            cpp -P
+%MAKE           gmake
+</pre></div>
+</div>
+<ul class="simple">
+<li>arch-X64_KANIK2.env : Este archivo puede quedar vacio, pero se pueden cargar o definir variables de entorno si se requieren en algun caso especial.</li>
+</ul>
+<p>Hecho esto podemos compilar usando el script make_xios (al hacer <code class="docutils literal notranslate"><span class="pre">./make_xios</span> <span class="pre">--help</span></code> nos arroja informacion sobre los parametros soportados por el script)</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ ./make_xios --prod --arch X64_KANIK2
+</pre></div>
+</div>
+<p>Para comprobar que el binario de XIOS funciona correctamente podemos correr un ejemplo, este ejemplo se compila tambien y lo encontramos en la carpeta bin junto al binario de XIOS: test_client.exe</p>
+<p>Es necesario crear un script de bash para reservar nodos usando el manejador de colas PBS, el script para correr este ejemplo es el siguiente:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/ksh</span>
+<span class="c1">#PBS -N XIOS_TEST</span>
+<span class="c1">#PBS -q default</span>
+<span class="c1">#PBS -l nodes=2:ppn=10</span>
+<span class="c1">#PBS -o xios_test.log</span>
+<span class="c1">#PBS -e xios_test.error</span>
+
+<span class="nb">set</span> -u
+<span class="nb">set</span>  x
+
+<span class="nv">NPPC</span><span class="o">=</span><span class="m">7</span>   <span class="c1"># Numero de procesos test_client.exe</span>
+<span class="nv">NPPS</span><span class="o">=</span><span class="m">2</span>   <span class="c1"># Numero de procesos xios_server.exe</span>
+
+date
+
+<span class="nb">cd</span> /nuestra_ruta_de_trabajo/xios/bin/test
+
+sort -u <span class="nv">$PBS_NODEFILE</span> &gt; nodes.file
+
+<span class="nv">xiosc_execparam</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+<span class="nv">xioss_execparam</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+
+<span class="c1"># Creamos la cadena que se pasa a mpiexec, que contiene el listado en que nodo va cada proceso, y que cantidad.</span>
+<span class="k">while</span> <span class="nb">read</span> line
+<span class="k">do</span>
+ <span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;</span><span class="nv">$xiosc_execparam</span><span class="s2">&quot;</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+      <span class="nv">xiosc_execparam</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$xiosc_execparam</span><span class="s2">-n </span><span class="nv">$NPPC</span><span class="s2"> -host </span><span class="nv">$line</span><span class="s2"> -env I_MPI_DEVICE rdssm ./test_client.exe &quot;</span>
+      <span class="nv">xioss_execparam</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$xioss_execparam</span><span class="s2">-n </span><span class="nv">$NPPS</span><span class="s2"> -host </span><span class="nv">$line</span><span class="s2"> -env I_MPI_DEVICE rdssm -env I_MPI_EXTRA_FILESYSTEM on -env I_MPI_EXTRA_FILESYSTEM_LIST lustre ./xios_server.exe &quot;</span>
+ <span class="k">else</span>
+      <span class="nv">xiosc_execparam</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$xiosc_execparam</span><span class="s2">: -n </span><span class="nv">$NPPC</span><span class="s2"> -host </span><span class="nv">$line</span><span class="s2"> -env I_MPI_DEVICE rdssm ./test_client.exe &quot;</span>
+      <span class="nv">xioss_execparam</span><span class="o">=</span><span class="s2">&quot;</span><span class="nv">$xioss_execparam</span><span class="s2">: -n </span><span class="nv">$NPPS</span><span class="s2"> -host </span><span class="nv">$line</span><span class="s2"> -env I_MPI_DEVICE rdssm -env I_MPI_EXTRA_FILESYSTEM on -env I_MPI_EXTRA_FILESYSTEM_LIST lustre ./xios_server.exe &quot;</span>
+ <span class="k">fi</span>
+<span class="k">done</span> &lt; <span class="s2">&quot;nodes.file&quot;</span>
+
+<span class="nb">echo</span> mpiexec <span class="nv">$xiosc_execparam</span> : <span class="nv">$xioss_execparam</span>
+mpdboot -n <span class="m">2</span> -r ssh -f nodes.file
+mpiexec <span class="nv">$xiosc_execparam</span> : <span class="nv">$xioss_execparam</span>
+mpdallexit
+
+date
+</pre></div>
+</div>
+<p>Tambien necesitaremos el archivo de configuracion de xios_server.exe, un archivo xml que define el el funcionamiento de xios y los archivos de salida.</p>
+<ul class="simple">
+<li>Archivo iodef.xml</li>
+</ul>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+<span class="nt">&lt;simulation&gt;</span>
+
+ <span class="nt">&lt;context</span> <span class="na">id=</span><span class="s">&quot;test&quot;</span> <span class="na">calendar_type=</span><span class="s">&quot;Gregorian&quot;</span> <span class="na">start_date=</span><span class="s">&quot;2012-03-01 15:00:00&quot;</span> <span class="na">time_origin=</span><span class="s">&quot;2012-02-29 15:00:00&quot;</span><span class="nt">&gt;</span>
+
+
+   <span class="nt">&lt;field_definition</span> <span class="na">level=</span><span class="s">&quot;1&quot;</span> <span class="na">enabled=</span><span class="s">&quot;.FALSE.&quot;</span><span class="nt">&gt;</span>
+     <span class="nt">&lt;field</span> <span class="na">id=</span><span class="s">&quot;field_A&quot;</span>  <span class="na">operation=</span><span class="s">&quot;average&quot;</span> <span class="na">freq_op=</span><span class="s">&quot;3600s&quot;</span> <span class="na">domain_ref=</span><span class="s">&quot;domain_A&quot;</span>  <span class="na">axis_ref=</span><span class="s">&quot;axis_A&quot;</span> <span class="nt">/&gt;</span>
+   <span class="nt">&lt;/field_definition&gt;</span>
+
+
+   <span class="nt">&lt;file_definition</span> <span class="na">type=</span><span class="s">&quot;one_file&quot;</span> <span class="na">par_access=</span><span class="s">&quot;collective&quot;</span> <span class="na">output_freq=</span><span class="s">&quot;6h&quot;</span> <span class="na">output_level=</span><span class="s">&quot;10&quot;</span> <span class="na">enabled=</span><span class="s">&quot;.TRUE.&quot;</span><span class="nt">&gt;</span>
+     <span class="nt">&lt;file</span> <span class="na">id=</span><span class="s">&quot;output&quot;</span> <span class="na">name=</span><span class="s">&quot;output&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;field</span> <span class="na">field_ref=</span><span class="s">&quot;field_A&quot;</span> <span class="nt">/&gt;</span>
+     <span class="nt">&lt;/file&gt;</span>
+   <span class="nt">&lt;/file_definition&gt;</span>
+
+
+   <span class="nt">&lt;axis_definition&gt;</span>
+     <span class="nt">&lt;axis</span> <span class="na">id=</span><span class="s">&quot;axis_A&quot;</span> <span class="na">zoom_size=</span><span class="s">&quot;2&quot;</span> <span class="na">zoom_end=</span><span class="s">&quot;3&quot;</span> <span class="nt">/&gt;</span>
+   <span class="nt">&lt;/axis_definition&gt;</span>
+
+   <span class="nt">&lt;domain_definition&gt;</span>
+     <span class="nt">&lt;domain</span> <span class="na">id=</span><span class="s">&quot;domain_A&quot;</span> <span class="nt">/&gt;</span>
+   <span class="nt">&lt;/domain_definition&gt;</span>
+
+   <span class="nt">&lt;grid_definition</span> <span class="nt">/&gt;</span>
+
+  <span class="nt">&lt;/context&gt;</span>
+
+  <span class="nt">&lt;context</span> <span class="na">id=</span><span class="s">&quot;toto&quot;</span> <span class="nt">&gt;</span>
+  <span class="nt">&lt;/context&gt;</span>
+
+  <span class="nt">&lt;context</span> <span class="na">id=</span><span class="s">&quot;titi&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/context&gt;</span>
+
+  <span class="nt">&lt;context</span> <span class="na">id=</span><span class="s">&quot;tata&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/context&gt;</span>
+
+  <span class="nt">&lt;context</span> <span class="na">id=</span><span class="s">&quot;xios&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;variable_definition&gt;</span>
+        <span class="nt">&lt;variable_group</span> <span class="na">id=</span><span class="s">&quot;buffer&quot;</span><span class="nt">&gt;</span>
+            buffer_size = 80000000
+            buffer_server_factor_size = 2
+         <span class="nt">&lt;/variable_group&gt;</span>
+
+        <span class="nt">&lt;variable_group</span> <span class="na">id=</span><span class="s">&quot;parameters&quot;</span> <span class="nt">&gt;</span>
+          <span class="nt">&lt;variable</span> <span class="na">id=</span><span class="s">&quot;using_server&quot;</span> <span class="na">type=</span><span class="s">&quot;boolean&quot;</span><span class="nt">&gt;</span>true<span class="nt">&lt;/variable&gt;</span>
+          <span class="nt">&lt;variable</span> <span class="na">id=</span><span class="s">&quot;info_level&quot;</span> <span class="na">type=</span><span class="s">&quot;int&quot;</span><span class="nt">&gt;</span>50<span class="nt">&lt;/variable&gt;</span>
+        <span class="nt">&lt;/variable_group&gt;</span>
+      <span class="nt">&lt;/variable_definition&gt;</span>
+  <span class="nt">&lt;/context&gt;</span>
+
+<span class="nt">&lt;/simulation&gt;</span>
+</pre></div>
+</div>
+<p>El resultado de este script nos debe entregar un archivo netcdf llamado: <strong>output.nc</strong>, con variables field_A y field_C.</p>
+<img alt="Salida de test xios" class="align-center" src="_images/xios_output_test.png" />
+</div>
+<div class="section" id="compilando-nemo-opa">
+<h3>Compilando NEMO-OPA<a class="headerlink" href="#compilando-nemo-opa" title="Permalink to this headline">¶</a></h3>
+<p>Requerimientos:</p>
+<ul class="simple">
+<li>Intérprete de comandos bash, y perl.</li>
+<li>Compilador fortran 90.</li>
+<li>Librerías MPI.</li>
+<li>netcdf , netcdf-fortran y sus dependencias.</li>
+</ul>
+<div class="section" id="preparar-archivo-de-la-arquitectura">
+<h4>Preparar archivo de la arquitectura.<a class="headerlink" href="#preparar-archivo-de-la-arquitectura" title="Permalink to this headline">¶</a></h4>
+<p>El archivo que describe la arquitectura, debe contener las rutas al compilador a utilizar, ruta a las librerías MPI, netcdf y dependencias. En la ruta <code class="docutils literal notranslate"><span class="pre">$NEMO_HOME/ARCH</span></code> existen plantillas de arquitecturas comunes. Para el caso del cluster chaman usamos el siguiente archivo de arquitectura <code class="docutils literal notranslate"><span class="pre">arch-X64_KANIK2.fcm</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>%NCDF_HOME           /LUSTRE/hmedrano/libraries
+%HDF5_HOME           /LUSTRE/hmedrano/libraries
+%XIOS_HOME           /LUSTRE/hmedrano/MODELOS/XIOS_3.5
+%OASIS_HOME          <span class="nv">$WORKDIR</span>/now/models/oa3mct
+
+%NCDF_INC            -I%NCDF_HOME/include
+%NCDF_LIB            -L%NCDF_HOME/lib -lnetcdff -lnetcdf -lhdf5_hl -lhdf5 -lz -lm -lcurl -lmpi -lstdc++
+%XIOS_INC            -I%XIOS_HOME/inc
+%XIOS_LIB            -L%XIOS_HOME/lib -lxios
+%OASIS_INC           -I%OASIS_HOME/build/lib/mct -I%OASIS_HOME/build/lib/psmile.MPI1
+%OASIS_LIB           -L%OASIS_HOME/lib -lpsmile.MPI1 -lmct -lmpeu -lscrip
+
+%FC                  mpiifort -c -cpp
+%FCFLAGS             -DCPP_PARA -i4 -r8 -O3 -xSSE4.2 -fp-model <span class="nb">source</span>
+%FFLAGS              %FCFLAGS
+%LD                  mpiifort
+%LDFLAGS             -lstdc++
+%FPPFLAGS            -P -C -traditional
+%AR                  ar
+%ARFLAGS             rs
+%MK                  gmake
+%USER_INC            %XIOS_INC %OASIS_INC %NCDF_INC
+%USER_LIB            %XIOS_LIB %OASIS_LIB %NCDF_LIB
+</pre></div>
+</div>
+<p>En este archivo le diremos al script de compilación de nemo, que librerías de netcdf, hdf5 se encuentran en la ruta <code class="docutils literal notranslate"><span class="pre">/LUSTRE/hmedrano/libraries</span></code> , y también las librerias con las que se vinculara nemo con el servicio XIOS, esta encontrandose en <code class="docutils literal notranslate"><span class="pre">/LUSTRE/hmedrano/MODELOS/XIOS_3.5</span></code>.</p>
+</div>
+<div class="section" id="compilar-herramientas-de-nemo">
+<h4>Compilar herramientas de NEMO.<a class="headerlink" href="#compilar-herramientas-de-nemo" title="Permalink to this headline">¶</a></h4>
+<p>Antes de generar el ejecutable de nemo-opa específico para nuestra configuración tenemos que preparar las herramientas que incluye Nemo. Estas herramientas, nos servirán para crear mallas para configuraciones, mallas anidadas, archivos de pesos y formatos para fronteras tipo OBC y BDY.</p>
+<p>La ruta donde se encuentran las herramientas es: <code class="docutils literal notranslate"><span class="pre">$NEMO_HOME/TOOLS</span></code>. Dentro de esta ruta está el script maketools. Al hacer <code class="docutils literal notranslate"><span class="pre">./maketools</span> <span class="pre">–h</span></code> nos entrega los argumentos válidos que puede recibir:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>@TOOLS $ ./maketools -h
+Usage    : maketools  [-h] [-n name] [-m arch] [-j No] [-t tmpdir]
+ -h      : help
+ -h institute : specific help for consortium members
+ -n name : tool name, [-n help] to list existing tools
+ -m arch : choose compiler, [-m help] to list exiting compilers
+ -j No   : number of processes used to compile (0=nocompilation)
+ -t dir  : remporary directory for compilation
+
+Example to compile Agrif Nesting tools
+maketools -n NESTING
+
+Available tools :
+BDY_TOOLS
+GRIDGEN
+MISCELLANEOUS
+MPP_PREP
+NESTING
+OBSTOOLS
+REBUILD
+REBUILD_NEMO
+SECTIONS_DIADCT
+SIREN
+WEIGHTS
+
+Available compilers for -m option :
+ALTIX_NAUTILUS_MPT   :  ifort compiler options for NOCS ALTIX cluster nautilus using NetCDF4 libraries
+macport_osx          :  generic gfortran compiler options for OSX installed with macport, http://www.macports.org/
+openmpi_NAVITI_MERCATOR :  ifort compiler options for linux
+PW7_C2A_XIO          :  POWER 6 at ECMWF
+PW7_METO             :  IBM POWER7  UKMO
+x3750_ADA            :  Ada  IBM x3750 at french IDRIS, http://www.idris.fr/ada/ada-hw-ada.html
+X64_CURIE            :  Curie BULL at TGCC, http://www-hpc.cea.fr/en/complexe/tgcc-curie.htm
+X64_KANIK2           :  Sistema Kanik2, compiladores intel hdf y netcdf paralelo.
+X64_MOBILIS          :  Mobilis - ClusterVision X86_64 cluster at NOCS
+X64_VAYU             :  Vayu Sun Constellation at Australian NCI, http://nf.nci.org.au/facilities/vayu/hardware.php
+X64_YELLOWSTONE      :  Yellowstone IBM at NCAR, http://www2.cisl.ucar.edu/resources/yellowstone
+XC_ARCHER            :  compiler options for Archer CRAY XC-30 (using crayftn compiler)
+XC_ARCHER_INTEL      :  compiler options for Archer CRAY XC-30 (using intel compiler)
+Available consortium member sub-directories :
+CMCC
+CNRS
+INGV
+NOC
+OLD
+use &quot;makenemo -h all&quot; or &quot;makenemo -m help&quot; to see compilers available in member&#39;s sub-directories
+</pre></div>
+</div>
+<p>Para compilar las herramientas necesitamos especificarle en el comando, la arquitectura que vamos a usar, en este caso usaremos la listada como X64_KANIK2.</p>
+<p><code class="docutils literal notranslate"><span class="pre">&#64;TOOLS&gt;</span> <span class="pre">./maketools</span> <span class="pre">-m</span> <span class="pre">X64_KANIK2</span></code> Compila todas las herraminetas listadas usando la arquitectura definida en X64_KANIK2</p>
+<p><code class="docutils literal notranslate"><span class="pre">&#64;TOOLS&gt;</span> <span class="pre">./maketools</span> <span class="pre">-n</span> <span class="pre">NESTING</span> <span class="pre">-m</span> <span class="pre">X64_KANIK2</span></code> Compila solo la herramienta NESTING.</p>
+</div>
+<div class="section" id="preparar-una-nueva-configuracion-y-compilar-nemo">
+<h4>Preparar una nueva configuración y compilar NEMO.<a class="headerlink" href="#preparar-una-nueva-configuracion-y-compilar-nemo" title="Permalink to this headline">¶</a></h4>
+<p>Dentro de la ruta <code class="docutils literal notranslate"><span class="pre">$NEMO_HOME/CONFIG</span></code> encontramos por default algunas configuraciones de ejemplo.</p>
+<p>También encontramos el script que prepara y compila las configuraciones “makenemo”, al correr el comando asi: <code class="docutils literal notranslate"><span class="pre">./makenemo</span> <span class="pre">–h</span></code> nos lista los parámetros que recibe, las configuraciones y las arquitecturas disponibles.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>@CONFIG $ ./makenemo -h
+Usage    : makenemo  <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-n name<span class="o">]</span> <span class="o">[</span>-m arch<span class="o">]</span> <span class="o">[</span>-d dir1 dir2<span class="o">]</span> <span class="o">[</span>-r conf<span class="o">]</span> <span class="o">[</span>-s Path<span class="o">]</span> <span class="o">[</span>-e Path<span class="o">]</span> <span class="o">[</span>-j No<span class="o">]</span> <span class="o">[</span>-v No<span class="o">]</span> <span class="o">[</span>-k <span class="m">0</span>/1<span class="o">]</span>
+ -h             : <span class="nb">help</span>
+ -h institute : specific <span class="nb">help</span> <span class="k">for</span> consortium members
+ -n name      : config name, <span class="o">[</span>-n help<span class="o">]</span> to list existing configurations
+ -m arch      : choose compiler, <span class="o">[</span>-m help<span class="o">]</span> to list existing compilers
+ -d dir       : choose NEMO sub-directories
+ -r conf      : choose reference configuration
+ -s Path      : choose alternative location <span class="k">for</span> NEMO main directory
+ -e Path      : choose alternative location <span class="k">for</span> MY_SRC directory
+ -j No        : number of processes used to compile <span class="o">(</span><span class="nv">0</span><span class="o">=</span>nocompilation<span class="o">)</span>
+ -v No        : <span class="nb">set</span> verbosity level <span class="k">for</span> compilation <span class="o">[</span><span class="m">0</span>-3<span class="o">]</span>
+ -k <span class="m">0</span>/1       : used cpp keys check <span class="o">(</span><span class="nv">default</span> <span class="o">=</span> <span class="m">1</span> -&gt; check activated<span class="o">)</span>
+ -t dir       : temporary directory <span class="k">for</span> compilation
+
+Example to install a new configuration MY_CONFIG
+with OPA_SRC and LIM_SRC_2
+makenemo -n MY_CONFIG -d <span class="s2">&quot;OPA_SRC LIM_SRC_2&quot;</span>
+
+Available configurations :
+GOLFO12-E01 OPA_SRC LIM_SRC_2 NST_SRC
+GOLFO12-J01 OPA_SRC LIM_SRC_2 NST_SRC
+GOLFO12-J03 OPA_SRC LIM_SRC_2 NST_SRC
+TATL025-J02 OPA_SRC LIM_SRC_2 NST_SRC
+TATL025-J03 OPA_SRC LIM_SRC_2 NST_SRC
+GOLFO36-J20 OPA_SRC LIM_SRC_2 NST_SRC
+GOLFO36-J21 OPA_SRC LIM_SRC_2 NST_SRC
+GOLFO36-J01 OPA_SRC LIM_SRC_2 NST_SRC
+GOLFO36-J02 OPA_SRC LIM_SRC_2 NST_SRC
+GOLFO36-J03 OPA_SRC LIM_SRC_2 NST_SRC
+GOLFO36-J04 OPA_SRC LIM_SRC_2 NST_SRC
+RIDGE5km-J01 OPA_SRC LIM_SRC_2 NST_SRC
+RIDGE05KM-J01 OPA_SRC LIM_SRC_2 NST_SRC
+RIDGE05KM-J02 OPA_SRC LIM_SRC_2 NST_SRC
+RIDGE05KM-J03 OPA_SRC LIM_SRC_2 NST_SRC
+RIDGE05KM-J04 OPA_SRC LIM_SRC_2 NST_SRC
+TROP36-J01 OPA_SRC LIM_SRC_2 NST_SRC
+TROP36-J02 OPA_SRC LIM_SRC_2 NST_SRC
+TROP36-J03 OPA_SRC LIM_SRC_2 NST_SRC
+TROP04-J01 OPA_SRC LIM_SRC_2 NST_SRC
+TROP04-J03 OPA_SRC LIM_SRC_2 NST_SRC
+GOLFO36-J10 OPA_SRC LIM_SRC_2 NST_SRC
+GOLFO36-J11 OPA_SRC LIM_SRC_2 NST_SRC
+TROP04-J02 OPA_SRC LIM_SRC_2 NST_SRC
+TATL025-J01 OPA_SRC LIM_SRC_2 NST_SRC
+TROP04-J10 OPA_SRC LIM_SRC_2 NST_SRC
+TROP025-J20 OPA_SRC LIM_SRC_2 NST_SRC
+TROP04-J20 OPA_SRC LIM_SRC_2 NST_SRC
+TROP04-J21 OPA_SRC LIM_SRC_2 NST_SRC
+TROP04-J22 OPA_SRC LIM_SRC_2 NST_SRC
+TROP04-J23 OPA_SRC LIM_SRC_2 NST_SRC
+TROP04-J24 OPA_SRC LIM_SRC_2 NST_SRC
+TROP04-J33 OPA_SRC LIM_SRC_2 NST_SRC
+TROP04-J32 OPA_SRC LIM_SRC_2 NST_SRC
+TATL025-J10 OPA_SRC LIM_SRC_2 NST_SRC
+TATL025-J11 OPA_SRC LIM_SRC_2 NST_SRC
+TATL025-J12 OPA_SRC LIM_SRC_2 NST_SRC
+TATL025-J13 OPA_SRC LIM_SRC_2 NST_SRC
+TROP04-AMLJ50 OPA_SRC LIM_SRC_2 NST_SRC
+TROP04-J30 OPA_SRC LIM_SRC_2 NST_SRC
+TROP04-J31 OPA_SRC LIM_SRC_2 NST_SRC
+GOLFO36-J01-ONESTORM OPA_SRC LIM_SRC_2 NST_SRC
+GOLFO36-GUSTAVIKE OPA_SRC LIM_SRC_2 NST_SRC
+GOLFO36-NOGUSTAVIKE OPA_SRC LIM_SRC_2 NST_SRC
+GOLFO36-CIC10 OPA_SRC LIM_SRC_2 NST_SRC
+GOLFO36-CIC01 OPA_SRC LIM_SRC_2 NST_SRC TOP_SRC
+GOLFO12-PEMEX001 OPA_SRC LIM_SRC_2 NST_SRC
+AMM12 OPA_SRC LIM_SRC_2 TOP_SRC NST_SRC OFF_SRC
+GOLFO36-CIC01-EXP01 OPA_SRC LIM_SRC_2 NST_SRC TOP_SRC
+GOLFO36-LIGHT OPA_SRC LIM_SRC_2 NST_SRC TOP_SRC
+
+Example to remove bad configuration
+./makenemo -n MY_CONFIG clean_config
+
+Example to clean
+./makenemo clean
+
+Example to list the available keys of a CONFIG
+./makenemo list_key
+
+Example to add and remove keys
+./makenemo add_key <span class="s2">&quot;key_iomput key_mpp_mpi&quot;</span> del_key <span class="s2">&quot;key_agrif&quot;</span>
+
+Example to add and remove keys <span class="k">for</span> a new configuration, and <span class="k">do</span> not compile
+./makenemo -n MY_CONFIG -j0 add_key <span class="s2">&quot;key_iomput key_mpp_mpi&quot;</span> del_key <span class="s2">&quot;key_agrif&quot;</span>
+
+Available compilers <span class="k">for</span> -m option :
+ALTIX_NAUTILUS_MPT   :  ifort compiler options <span class="k">for</span> NOCS ALTIX cluster nautilus using NetCDF4 libraries
+macport_osx          :  generic gfortran compiler options <span class="k">for</span> OSX installed with macport, http://www.macports.org/
+openmpi_NAVITI_MERCATOR :  ifort compiler options <span class="k">for</span> linux
+PW7_C2A_XIO          :  POWER <span class="m">6</span> at ECMWF
+PW7_METO             :  IBM POWER7  UKMO
+x3750_ADA            :  Ada  IBM x3750 at french IDRIS, http://www.idris.fr/ada/ada-hw-ada.html
+X64_CURIE            :  Curie BULL at TGCC, http://www-hpc.cea.fr/en/complexe/tgcc-curie.htm
+X64_KANIK2           :  Sistema Kanik2, compiladores intel hdf y netcdf paralelo.
+X64_MOBILIS          :  Mobilis - ClusterVision X86_64 cluster at NOCS
+X64_VAYU             :  Vayu Sun Constellation at Australian NCI, http://nf.nci.org.au/facilities/vayu/hardware.php
+X64_YELLOWSTONE      :  Yellowstone IBM at NCAR, http://www2.cisl.ucar.edu/resources/yellowstone
+XC_ARCHER            :  compiler options <span class="k">for</span> Archer CRAY XC-30 <span class="o">(</span>using crayftn compiler<span class="o">)</span>
+XC_ARCHER_INTEL      :  compiler options <span class="k">for</span> Archer CRAY XC-30 <span class="o">(</span>using intel compiler<span class="o">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="roms">
+<h2>ROMS<a class="headerlink" href="#roms" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="wrf">
+<h2>WRF<a class="headerlink" href="#wrf" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="hwrf">
+<h2>HWRF<a class="headerlink" href="#hwrf" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">lamb docs</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Tabla de contenido</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="aboutlamb.html">Sobre chaman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gstarted.html">Empezando</a></li>
+<li class="toctree-l1"><a class="reference internal" href="submitjobs.html">Someter tareas al cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workinglamb.html">Trabajando en chaman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jobexamples.html">Tareas de ejemplo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="software.html">Software</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Software de modelado</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#nemo-opa-3-4">NEMO-OPA 3.4</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#compilando-de-xios">Compilando de XIOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compilando-nemo-opa">Compilando NEMO-OPA</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#roms">ROMS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#wrf">WRF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hwrf">HWRF</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="production.html">Productos de chaman</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://chaman.cicese.mx/ganglia/">Monitoreo de recursos: Ganglia</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="software.html" title="previous chapter">Software disponible en chaman</a></li>
+      <li>Next: <a href="production.html" title="next chapter">Productos del cluster Chaman</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, divCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/modelingsoftware.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

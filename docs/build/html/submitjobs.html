@@ -1,0 +1,272 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Enviar tareas al cluster chaman &#8212; lamb docs 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Trabajando en el cluster" href="workinglamb.html" />
+    <link rel="prev" title="Empezando en chaman:" href="gstarted.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="enviar-tareas-al-cluster-chaman">
+<span id="submit-jobs"></span><h1>Enviar tareas al cluster chaman<a class="headerlink" href="#enviar-tareas-al-cluster-chaman" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="tareas-por-lotes">
+<h2>Tareas por lotes<a class="headerlink" href="#tareas-por-lotes" title="Permalink to this headline">¶</a></h2>
+<p>Tareas por lotes o <em>“Batch jobs”</em> son tareas que no interactuan con el usuario durante su ejecución. Son enviadas una vez y son canalizadas a la cola de ejecucion.</p>
+<p>Las especificaciones de varios ajustes y las llamadas al software a ser ejecutado estan contenidas en el script de envio creado y editado por el usuario.</p>
+<p>De forma general para enviar una tarea al manejador de colas es usar el comando de PBS Torque <strong>qsub</strong>.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ qsub script_tarea.sh
+</pre></div>
+</div>
+<p>Donde <code class="docutils literal notranslate"><span class="pre">script_tarea.sh</span></code> contiene información sobre la tarea, junto a la llamada a la aplicación.</p>
+<p>Todos las tareas seran enviadas desde los nodos maestros <code class="docutils literal notranslate"><span class="pre">chaman</span></code> y <code class="docutils literal notranslate"><span class="pre">kanik2</span></code>.  Un ejemplo de una tarea simple y de como enviar la tarea a ejecución se encuentra en la sección <a class="reference internal" href="gstarted.html#first-job"><span class="std std-ref">Tu primer trabajo en el cluster</span></a>.</p>
+<p>Ejemplos mas avanzados se pueden revisar en <a class="reference internal" href="jobexamples.html#job-examples"><span class="std std-ref">Tareas de ejemplo</span></a>.</p>
+<p>Es importante recordar que las salidas y archivos de error que generen nuestras tareas deben escribirse en la sección del directorio LUSTRE que se nos asigno.</p>
+</div>
+<div class="section" id="tareas-interactivas">
+<h2>Tareas interactivas<a class="headerlink" href="#tareas-interactivas" title="Permalink to this headline">¶</a></h2>
+<p>Las tareas interactivas se especifican usando el parametro <code class="docutils literal notranslate"><span class="pre">-I</span></code> en el comando <code class="docutils literal notranslate"><span class="pre">qsub</span></code>. Permite la interaccion del usuario durante su ejecución. Entregan al usuario un nuevo <em>shell</em> desde donde se pueden llamar a las aplicaciones.</p>
+<p>La forma general para enviar tareas interactivas es:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ qsub -X -I -q default -l <span class="nv">nodes</span><span class="o">=</span><span class="m">1</span> -d <span class="nv">$PWD</span>
+</pre></div>
+</div>
+<p>Donde <code class="docutils literal notranslate"><span class="pre">-I</span></code> es requerido y especifica una tarea interactiva. El parametro <code class="docutils literal notranslate"><span class="pre">-X</span></code> reenvia el servidor grafico del nodo que se nos asigno a nuestra sesión, permitiendo usar aplicaciones graficas.</p>
+<p>Si un nodo esta disponible, el comando nos devuelve un <em>shell</em> en el nodo que se nos asigno, en caso contrario el comando se quedara en espera.</p>
+</div>
+<div class="section" id="directivas-basicas">
+<h2>Directivas basicas<a class="headerlink" href="#directivas-basicas" title="Permalink to this headline">¶</a></h2>
+<p>Las siguientes opciones se pueden encotnra en un script para envio de tareas usando <code class="docutils literal notranslate"><span class="pre">qsub</span></code>. Pueden aparecer como lineas en el script que comienzan con <code class="docutils literal notranslate"><span class="pre">#PBS</span></code> o como parametros en linea al comando <code class="docutils literal notranslate"><span class="pre">qsub</span></code>.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="30%" />
+<col width="23%" />
+<col width="27%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Opción</th>
+<th class="head">Descripción</th>
+<th class="head">Ejemplo</th>
+<th class="head">Notas</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">#PBS</span> <span class="pre">-q</span> <span class="pre">nombre-cola</span></code></td>
+<td>Asigna una cola de ejecución</td>
+<td><code class="docutils literal notranslate"><span class="pre">#PBS</span> <span class="pre">-q</span> <span class="pre">mem256</span></code></td>
+<td>Asigna el job a la cola mem256</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">#PBS</span> <span class="pre">-N</span> <span class="pre">nombreTarea</span></code></td>
+<td>Le da un nombre a la tarea</td>
+<td><code class="docutils literal notranslate"><span class="pre">#PBS</span> <span class="pre">-N</span> <span class="pre">MiTarea</span></code></td>
+<td>Por defecto usa el nombre del
+script de envio de la tarea</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">#PBS</span> <span class="pre">-l</span> <span class="pre">mem=&lt;Tamaño&gt;</span></code></td>
+<td>Maxima cantidad de memoria fisica
+que podra usar nuestra tarea (MB)</td>
+<td><code class="docutils literal notranslate"><span class="pre">#PBS</span> <span class="pre">-l</span> <span class="pre">mem=200MB</span></code></td>
+<td>Si se excede de esa cantidad
+la tarea es abortada</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">#PBS</span> <span class="pre">-l</span>
+<span class="pre">walltime=&lt;tiempo&gt;</span></code></td>
+<td>Tiempo maximo que la tarea puede
+permanecer en ejecución.</td>
+<td><code class="docutils literal notranslate"><span class="pre">#PBS</span> <span class="pre">-l</span>
+<span class="pre">walltime=12:00:00</span></code></td>
+<td>12 horas en ejecución como
+maximo</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">#PBS</span> <span class="pre">-l</span>
+<span class="pre">nodes=N:ppn=T</span></code></td>
+<td>Numero de nodos y el numero de
+cores por nodo que solicitamos</td>
+<td><code class="docutils literal notranslate"><span class="pre">#PBS</span> <span class="pre">-l</span> <span class="pre">nodes=6:ppn=20</span></code></td>
+<td>Por defecto es 1 nodo 1 core</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">#PBS</span> <span class="pre">-M</span> <span class="pre">&lt;email&gt;</span></code></td>
+<td>Correo electronico para
+notificaciones de estado de tarea.</td>
+<td><code class="docutils literal notranslate"><span class="pre">#PBS</span> <span class="pre">-M</span>
+<span class="pre">hmedrano&#64;cicese.mx</span></code></td>
+<td>Recomendado para tareas
+por lotes</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">#PBS</span> <span class="pre">-o</span> <span class="pre">&lt;ruta&gt;</span></code></td>
+<td>Ruta para el archivo de salida de
+la consola.</td>
+<td><code class="docutils literal notranslate"><span class="pre">#PBS</span> <span class="pre">-o</span>
+<span class="pre">salida.out</span></code></td>
+<td>Salida estandar.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">#PBS</span> <span class="pre">-e</span> <span class="pre">&lt;ruta&gt;</span></code></td>
+<td>Ruta al archivo de errores.</td>
+<td><code class="docutils literal notranslate"><span class="pre">#PBS</span> <span class="pre">-e</span>
+<span class="pre">errores.err</span></code></td>
+<td>Mensajes de error estandar.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">#PBS</span> <span class="pre">-j</span> <span class="pre">oe</span></code></td>
+<td>Opción para combinar la salida
+estandar y error en un solo archivo</td>
+<td><code class="docutils literal notranslate"><span class="pre">#PBS</span> <span class="pre">-j</span> <span class="pre">oe</span></code></td>
+<td>Combina el error estandar y
+salida estandar al mismo
+archivo definido en -o</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="variables-de-ambiente-pbs">
+<h2>Variables de ambiente PBS<a class="headerlink" href="#variables-de-ambiente-pbs" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="29%" />
+<col width="71%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Nombre variable</th>
+<th class="head">Descripción</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>$PBS_NODEFILE</td>
+<td>Ruta del archivo que contiene la lista de los nodos asignados por PBS.</td>
+</tr>
+<tr class="row-odd"><td>$PBS_O_WORKDIR</td>
+<td>Directorio desde donde qsub fue llamado.</td>
+</tr>
+<tr class="row-even"><td>$PBS_O_INITDIR</td>
+<td>Directorio de trabajo para la tarea (Especificado por la directiva
+<code class="docutils literal notranslate"><span class="pre">-d</span></code> de qsub</td>
+</tr>
+<tr class="row-odd"><td>$PBS_JOBNAME</td>
+<td>Nombre de la tarea especificado por el usuario.</td>
+</tr>
+<tr class="row-even"><td>$PBS_O_LOGNAME</td>
+<td>Nombre del usuario que envía la tarea.</td>
+</tr>
+<tr class="row-odd"><td>$PBS_NUM_PPN</td>
+<td>Numero de procesadores por nodo solicitados (ppn)</td>
+</tr>
+<tr class="row-even"><td>$PBS_JOBID</td>
+<td>Numero de identificación unico de la tarea.</td>
+</tr>
+</tbody>
+</table>
+<p>El listado de variables completo esta disponible en la documentación oficial de <a class="reference external" href="http://docs.adaptivecomputing.com/torque/6-0-1/help.htm#topics/torque/2-jobs/exportedBatchEnvVar.htm">Torque</a>.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">lamb docs</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Tabla de contenido</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="aboutlamb.html">Sobre chaman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gstarted.html">Empezando</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Someter tareas al cluster</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#tareas-por-lotes">Tareas por lotes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tareas-interactivas">Tareas interactivas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#directivas-basicas">Directivas basicas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#variables-de-ambiente-pbs">Variables de ambiente PBS</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="workinglamb.html">Trabajando en chaman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jobexamples.html">Tareas de ejemplo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="software.html">Software</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modelingsoftware.html">Software de modelado</a></li>
+<li class="toctree-l1"><a class="reference internal" href="production.html">Productos de chaman</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://chaman.cicese.mx/ganglia/">Monitoreo de recursos: Ganglia</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="gstarted.html" title="previous chapter">Empezando en chaman:</a></li>
+      <li>Next: <a href="workinglamb.html" title="next chapter">Trabajando en el cluster</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, divCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/submitjobs.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,366 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Software disponible en chaman &#8212; lamb docs 0.0.1 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Software de modelado" href="modelingsoftware.html" />
+    <link rel="prev" title="Tareas de ejemplo" href="jobexamples.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="software-disponible-en-chaman">
+<h1>Software disponible en chaman<a class="headerlink" href="#software-disponible-en-chaman" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="uso-de-modulos">
+<h2>Uso de modulos<a class="headerlink" href="#uso-de-modulos" title="Permalink to this headline">¶</a></h2>
+<p>Con este sistema se puede modificar de forma dinamica el ambiente de la sesión del usuario, esto con la intención de facilitar el uso de las diferentes herramientas de desarrollo instaladas en chaman.</p>
+<p>Si se desea que se cargue un cierto módulo cada vez que se inicie sesión hay que agregar al archivo <em>.bashrc</em> la siguiente linea:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>module load intel/MPI2017
+</pre></div>
+</div>
+<div class="section" id="mandos-utiles-de-modules">
+<h3>Mandos utiles de modules<a class="headerlink" href="#mandos-utiles-de-modules" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="hll"> $ module avail
+</span></pre></div>
+</div>
+<div class="line-block">
+<div class="line">El cual listara los siguientes modulos definidos:</div>
+<div class="line"><br /></div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>---------------------------------------------- /usr/share/Modules/modulefiles -----------------------------------------------
+anaconda-python-2.7      intel/hdf5               intel/netcdf4.2          modules
+anaconda-python-3.5      intel/hdf5-paralelo      intel/netcdf4.2-paralelo ncl_gnu-6.4.0
+dot                      intel/MPI2013            intelpython2             null
+git-2.9.5                intel/MPI2017            julia-v0.5.0             opt-python
+gnu/netcdf4.2            intel/MPI2018            julia-v1.0.0             rocks-openmpi
+intel/cdf-bundle2013     intel/ncl-6.3.0          matlab-R2014b            rocks-openmpi_ib
+intel/cdf-bundle2017     intel/netcdf3.6.2        module-git               singularity
+intel/cdf-bundle2018     intel/netcdf3.6.3        module-info              use.own
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="hll">$ module load intel/cdf-bundle2018
+</span></pre></div>
+</div>
+<div class="line-block">
+<div class="line">Para cargar el modulo de las librerias y binarios de netcdf version 4.5, mas herramientas como NCO, Ncview, CDO.</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="hll">$ module list
+</span></pre></div>
+</div>
+<div class="line-block">
+<div class="line">Listara los modulos que estan cargados: ej</div>
+<div class="line"><br /></div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>Currently Loaded Modulefiles:
+   <span class="m">1</span><span class="o">)</span> intel/cdf-bundle2018
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="hll">$ module unload intel/cdf-bundle2018
+</span></pre></div>
+</div>
+<div class="line-block">
+<div class="line">Para descargar el modulo.</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="hll">$ module load intel/MPI2013
+</span></pre></div>
+</div>
+<div class="line-block">
+<div class="line">Para cargar la version de MPI de intel 11.1</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span><span class="hll">$ module display intel/MPI2013
+</span></pre></div>
+</div>
+<div class="line-block">
+<div class="line">Muestra las variables de entorno definidas en el modulo de MPI intel 11.1 2013</div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+</div>
+<p>Al enviar las tareas usando PBS, al script hay que agregarle el modulo que se va implementar por ej.
+<code class="docutils literal notranslate"><span class="pre">module</span> <span class="pre">load</span> <span class="pre">intel/MPI2013</span></code></p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Puede no ser necesario definir el modulo en el script de PBS si el modulo deseado ya se esta cargando de forma automatica en el archivo .bashrc</p>
+</div>
+</div>
+</div>
+<div class="section" id="matlab">
+<h2>Matlab<a class="headerlink" href="#matlab" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="que-version-de-matlab-esta-disponible">
+<h3>¿Que versión de matlab esta disponible?<a class="headerlink" href="#que-version-de-matlab-esta-disponible" title="Permalink to this headline">¶</a></h3>
+<p>En chaman se encuentra instalada la version R2014b de matlab, para cargar el modulo ejecutamos:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ module load matlab-R2014b
+</pre></div>
+</div>
+</div>
+<div class="section" id="como-ejecuto-matlab">
+<h3>¿Como ejecuto MATLAB?<a class="headerlink" href="#como-ejecuto-matlab" title="Permalink to this headline">¶</a></h3>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Hay que asegurarnos que ejecutar MATLAB en un nodo de computo y no en los nodos maestros <code class="docutils literal notranslate"><span class="pre">chaman</span></code> y <code class="docutils literal notranslate"><span class="pre">kanik2</span></code>.
+Es posible asi utilizar todos los cores de un nodo sin ninguna configuración especial. (Aunque es posible definir desde qsub cuantos cores pretendemos utilizar).</p>
+</div>
+</div>
+<div class="section" id="ejecutar-matlab-interactivamente">
+<h3>Ejecutar MATLAB interactivamente:<a class="headerlink" href="#ejecutar-matlab-interactivamente" title="Permalink to this headline">¶</a></h3>
+<p>Para ejecutar Matlab interactivamente, necesitamos crear una sesión interactiva en un nodo de computo.
+Para hacer esto en chaman, solicitamos la sesion con 1 nodo de computo, con el siguiente comando:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ qsub -X -I -l <span class="nv">nodes</span><span class="o">=</span><span class="m">1</span>,walltime<span class="o">=</span><span class="m">24</span>:00 -q default -d <span class="nv">$PWD</span>
+  qsub: waiting <span class="k">for</span> job <span class="m">12788</span> to start
+  qsub: job <span class="m">12788</span> ready
+
+$ _
+</pre></div>
+</div>
+<p>Una vez que la sesión interactiva comienze, podemos cargar los modulos apropiados y empezar Matlab como se describe a continuación:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ module load matlab-R2014b
+$ matlab -nodisplay -nosplash -r <span class="s2">&quot;miScript ; exit&quot;</span> &lt; /dev/null &gt; matrun.out <span class="m">2</span>&gt; matrun.err
+</pre></div>
+</div>
+<p>Este comando ejecutara los contenidos de miScript.m, enviando la salida de consola al archivo <code class="docutils literal notranslate"><span class="pre">matrun.out</span></code> y los mensajes de error a <code class="docutils literal notranslate"><span class="pre">matrun.err</span></code>.</p>
+<p>También es posible tener una sesion interactiva de matlab, solo limitados en cuanto a la visualización de graficos.</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ module load matlab-R2014b
+$ matlab -nodisplay -nosplash
+                   &lt; M A T L A B <span class="o">(</span>R<span class="o">)</span> &gt;
+          Copyright <span class="m">1984</span>-2014 The MathWorks, Inc.
+          R2014b <span class="o">(</span><span class="m">8</span>.4.0.150421<span class="o">)</span> <span class="m">64</span>-bit <span class="o">(</span>glnxa64<span class="o">)</span>
+                    September <span class="m">15</span>, <span class="m">2014</span>
+
+
+  To get started, <span class="nb">type</span> one of these: helpwin, helpdesk, or demo.
+  For product information, visit www.mathworks.com.
+  &gt;&gt;
+</pre></div>
+</div>
+</div>
+<div class="section" id="ejecucion-de-matlab-por-lotes-batch-mode">
+<h3>Ejecución de MATLAB por lotes (batch mode)<a class="headerlink" href="#ejecucion-de-matlab-por-lotes-batch-mode" title="Permalink to this headline">¶</a></h3>
+<p>Suponiendo que tenemos ya nuestro script de matlab que vamos a ejecutar, como ejemplo el siguiente script <code class="docutils literal notranslate"><span class="pre">griddedInterpol2D.m</span></code></p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="c">%% griddedInterpolant in Two Dimensions</span>
+<span class="c">% This example shows how to create and plot a 2-D interpolant using</span>
+<span class="c">% |griddedInterpolant|.</span>
+<span class="c">% Copyright 2015 The MathWorks, Inc.</span>
+
+<span class="c">%%</span>
+<span class="c">% In two dimensions and higher, you can specify the sample coordinates as</span>
+<span class="c">% an |ndgrid|, a compact grid, or a default grid. In this example, we&#39;ll</span>
+<span class="c">% supply an |ndgrid|.</span>
+
+<span class="c">%%</span>
+<span class="c">% Create a coarse grid and sample values.</span>
+<span class="p">[</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">]</span> <span class="p">=</span> <span class="nb">ndgrid</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="mf">.3</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">:</span><span class="mf">.3</span><span class="p">:</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">V</span> <span class="p">=</span> <span class="mf">0.75</span><span class="o">*</span><span class="n">Y</span><span class="o">.^</span><span class="mi">3</span> <span class="o">-</span> <span class="mi">3</span><span class="o">*</span><span class="n">Y</span> <span class="o">-</span> <span class="mi">2</span><span class="o">*</span><span class="n">X</span><span class="o">.^</span><span class="mi">2</span><span class="p">;</span>
+
+<span class="c">%%</span>
+<span class="c">% Construct the |griddedInterpolant|.</span>
+<span class="n">F</span> <span class="p">=</span> <span class="n">griddedInterpolant</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">V</span><span class="p">,</span><span class="s">&#39;spline&#39;</span><span class="p">);</span>
+
+<span class="c">%%</span>
+<span class="c">% Interpolate over finer intervals with 0.1 spacing.</span>
+<span class="p">[</span><span class="n">Xq</span><span class="p">,</span><span class="n">Yq</span><span class="p">]</span> <span class="p">=</span> <span class="nb">ndgrid</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">:</span><span class="mf">.1</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">:</span><span class="mf">.1</span><span class="p">:</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">Vq</span> <span class="p">=</span> <span class="n">F</span><span class="p">(</span><span class="n">Xq</span><span class="p">,</span><span class="n">Yq</span><span class="p">);</span>
+
+<span class="c">%%</span>
+<span class="c">% Plot the result.</span>
+<span class="n">figure</span><span class="p">(</span><span class="s">&#39;Visible&#39;</span><span class="p">,</span><span class="s">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">surf</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">Y</span><span class="p">,</span><span class="n">V</span><span class="p">);</span>
+<span class="n">view</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">title</span><span class="p">(</span><span class="s">&#39;Sample Data&#39;</span><span class="p">);</span>
+<span class="n">saveas</span><span class="p">(</span><span class="n">gcf</span><span class="p">,</span><span class="s">&#39;sampleData.png&#39;</span><span class="p">,</span><span class="s">&#39;png&#39;</span><span class="p">)</span>
+
+<span class="n">figure</span><span class="p">(</span><span class="s">&#39;Visible&#39;</span><span class="p">,</span><span class="s">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">surf</span><span class="p">(</span><span class="n">Xq</span><span class="p">,</span><span class="n">Yq</span><span class="p">,</span><span class="n">Vq</span><span class="p">);</span>
+<span class="n">view</span><span class="p">(</span><span class="mi">65</span><span class="p">,</span><span class="mi">60</span><span class="p">)</span>
+<span class="n">title</span><span class="p">(</span><span class="s">&#39;Refined with Spline&#39;</span><span class="p">);</span>
+<span class="n">saveas</span><span class="p">(</span><span class="n">gcf</span><span class="p">,</span><span class="s">&#39;refinedData.png&#39;</span><span class="p">,</span><span class="s">&#39;png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Ahora necesitamos crear un script de bash que contenga las instrucciones para el manejador de colas PBS y para el shell, como el cambio de directorios, cargado de modulos, etc.   Ejemplo : <code class="docutils literal notranslate"><span class="pre">submitmjob.sh</span></code></p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="ch">#!/bin/bash</span>
+<span class="c1">#PBS -N matlabjob</span>
+<span class="c1">#PBS -q default</span>
+<span class="c1">#PBS -l nodes=1</span>
+<span class="c1">#PBS -j oe</span>
+
+module load matlab-R2014b
+
+<span class="nb">set</span> -x
+
+<span class="c1"># La variable de entorno $PBS_O_WORKDIR es el directorio desde el que se ejecuta &quot;qsub submitmjob.sh&quot;</span>
+<span class="nb">cd</span> <span class="nv">$PBS_O_WORKDIR</span>
+
+<span class="nb">echo</span> Inicio: <span class="sb">`</span>date<span class="sb">`</span> &gt; tiempo.log
+<span class="nv">start</span><span class="o">=</span><span class="sb">`</span>date +%s<span class="sb">`</span>
+
+matlab -nosplash -nodisplay -nodesktop -r <span class="s2">&quot;griddedInterpol2D ; exit;&quot;</span>
+
+<span class="nb">echo</span> Final : <span class="sb">`</span>date<span class="sb">`</span> &gt;&gt; tiempo.log
+<span class="nv">end</span><span class="o">=</span><span class="sb">`</span>date +%s<span class="sb">`</span>
+<span class="nb">echo</span> Tiempo ejecución : <span class="k">$((</span>end-start<span class="k">))</span> seg &gt;&gt; tiempo.log
+</pre></div>
+</div>
+<p>Este script lo que hace es primero reservar 1 nodo de computo en la cola default y dirigir la salida de consola y de error al mismo archivo (Linea <code class="docutils literal notranslate"><span class="pre">#PBS</span> <span class="pre">-j</span> <span class="pre">oe</span></code>).</p>
+<p>Carga el modulo de matlab, nos dirigue a nuestro directorio de trabajo y ahi genera un archivo tiempo.log que contendra la fecha de inicio del script, fecha final y el tiempo que consumio.</p>
+<p>La ejecución de nuestro script de matlab se da en la linea <code class="docutils literal notranslate"><span class="pre">matlab</span> <span class="pre">-nosplash</span> <span class="pre">-nodisplay</span> <span class="pre">-nodesktop</span> <span class="pre">-r</span> <span class="pre">&quot;griddedInterpol2D</span> <span class="pre">;</span> <span class="pre">exit;&quot;</span></code>.</p>
+<p>Para enviar la tarea al manejador de colas ejecutamos:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ qsub submitmjob.sh
+</pre></div>
+</div>
+<p>Al finalizar esta tarea tendremos 2 archivos png (sampleData.png, refinedData.png) que son los resultados graficos del script de matlab, un archivo tiempo.log y un archivo submitmjob.o#### donde ##### sera el Job ID que nos arrojo el manejador de colas.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Podemos revisar el estado de nuestra tarea al ejecutar <code class="docutils literal notranslate"><span class="pre">qstat</span> <span class="pre">MiJobID</span> <span class="pre">-n</span></code> e incluso en otra sesión entrar por ssh al nodo que el manejador de colas nos reservo para monitorear que nuestra tarea este produciendo los resultados que esperamos.</p>
+</div>
+</div>
+</div>
+<div class="section" id="anaconda-python">
+<h2>Anaconda Python<a class="headerlink" href="#anaconda-python" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="que-version-de-python-esta-disponible">
+<h3>¿Que versión de python esta disponible?<a class="headerlink" href="#que-version-de-python-esta-disponible" title="Permalink to this headline">¶</a></h3>
+<p>En chaman se encuentran instaladas las versiones 2.7 y 3.0 de python, con la distribución anaconda.</p>
+<p>Para cargar python 2.7 usar:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ module load anaconda-python-2.7
+</pre></div>
+</div>
+<p>Para python 3.0 usar:</p>
+<div class="highlight-shell notranslate"><div class="highlight"><pre><span></span>$ module load anaconda-python-3
+</pre></div>
+</div>
+<p>TODO</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">lamb docs</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Tabla de contenido</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="aboutlamb.html">Sobre chaman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gstarted.html">Empezando</a></li>
+<li class="toctree-l1"><a class="reference internal" href="submitjobs.html">Someter tareas al cluster</a></li>
+<li class="toctree-l1"><a class="reference internal" href="workinglamb.html">Trabajando en chaman</a></li>
+<li class="toctree-l1"><a class="reference internal" href="jobexamples.html">Tareas de ejemplo</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Software</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#uso-de-modulos">Uso de modulos</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#mandos-utiles-de-modules">Mandos utiles de modules</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#matlab">Matlab</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#que-version-de-matlab-esta-disponible">¿Que versión de matlab esta disponible?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#como-ejecuto-matlab">¿Como ejecuto MATLAB?</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ejecutar-matlab-interactivamente">Ejecutar MATLAB interactivamente:</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ejecucion-de-matlab-por-lotes-batch-mode">Ejecución de MATLAB por lotes (batch mode)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#anaconda-python">Anaconda Python</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#que-version-de-python-esta-disponible">¿Que versión de python esta disponible?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modelingsoftware.html">Software de modelado</a></li>
+<li class="toctree-l1"><a class="reference internal" href="production.html">Productos de chaman</a></li>
+<li class="toctree-l1"><a class="reference external" href="http://chaman.cicese.mx/ganglia/">Monitoreo de recursos: Ganglia</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="jobexamples.html" title="previous chapter">Tareas de ejemplo</a></li>
+      <li>Next: <a href="modelingsoftware.html" title="next chapter">Software de modelado</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2020, divCT.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/software.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
