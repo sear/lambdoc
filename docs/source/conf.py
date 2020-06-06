@@ -20,8 +20,8 @@ import sphinx_rtd_theme
 # -- Project information -----------------------------------------------------
 
 project = 'lamb docs'
-copyright = '2020, divCT'
-author = 'divCT'
+copyright = '2020, DivCT'
+author = 'DivCT'
 
 # The short X.Y version
 version = ''
